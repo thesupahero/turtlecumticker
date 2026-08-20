@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ßr turtle cum ticker</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: transparent;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .ticker-bar {
+      width: 100vw;
+      height: 40px;
+      background: rgba(14, 28, 24, 0.95);
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      border-top: 2px solid #b83b28;
+      border-bottom: 2px solid #b83b28;
+    }
+
+    .ticker-header {
+      background: rgba(8, 18, 15, 0.9);
+      color: #e2a84b;
+      font-weight: 900;
+      font-size: 11px;
+      padding: 0 14px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      z-index: 10;
+      border-right: 1px solid rgba(226, 168, 75, 0.3);
+      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .header-icon {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+
+    .ticker-track-wrap {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .ticker-track {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      will-change: transform;
+      animation: ticker-scroll 80s linear infinite;
+    }
+
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes ticker-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .t-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      margin: 0 35px;
+      border-radius: 6px;
+      background: rgba(22, 42, 36, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    }
+
+    .t-spacer {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 20px;
+    }
+
+    .t-spacer img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticker-bar" id="ticker-bar">
+    <div class="ticker-header" id="header-box">
+      <span id="header-text">turtle cum</span>
+      <img id="header-gif" class="header-icon" src="" alt="icon">
+    </div>
+    <div class="ticker-track-wrap">
+      <div class="ticker-track" id="ticker-content"></div>
+    </div>
+  </div>
+
+  <script>
+    const config = {
+      
+      header_title: "why not us? 為什麼不是我們？",
+      header_icon: "https://cdn.7tv.app/emote/01F6RD7B88000B4N55W5NS55R7/4x.avif",
+      
+      colors: [
+        "#e2a84b", 
+        "#c8432a", 
+        "#3da37d", 
+        "#f0c265", 
+        "#e6f0ec", 
+        "#81c784"
+      ],
+
+      seperator: [
+        "https://cdn.7tv.app/emote/01GM22A1480000MTRBTT12C34Z/4x.avif",
+        "https://static2.klipy.com/ii/4e7bea9f7a3371424e6c16ebc93252fe/8c/9a/IR9Vo3q9XTJ3tf.gif",
+        "https://cdn.7tv.app/emote/01GM22A1480000MTRBTT12C34Z/4x.avif"
+      ],
+
+      shmemes: [
+        "ßr on top ßr獨佔鰲頭",
+        "any spots? 闪光时刻祝福降临",
+        "who's got an who's got an unbusy? 五个猎人同一分钟?",
+        "link open wide today 今天天空大开",
+        "better odds smile upon us 财神向下微笑",
+        "in 2007 RockLogster was reportedly seen teaching a group of pigeons basic accounting. The pigeons were later audited. -Hollow",
+        "shiny hour blessing arrive 闪光时刻祝福降临",
+        "five hunter same minute 五个猎人同一分钟",
+        "heaven open wide today 今天天空大开",
+        "fortune god smile down 财神向下微笑",
+        "</3",
+        "in 2023 iSilver was arrested for impersonating a parking attendant. He collected $84. -Hollow",
+        "many ditto make sex 很多百变怪在生蛋",
+        "too many egg for boxes 盒子蛋多装不下了",
+        "no rare flash yet 至今还没出稀有闪",
+        "we make more ditto do sex 叫更多百变怪继续生",
+        "In 2012 RockLogster was detained at an airport after TSA discovered 14 pounds of loose spaghetti in his carry-on. He claimed it was “for emergencies.” -Hollow",
+        "beer bottle bring 卵批次喚醒",
+        "many alcohol 如今，六根支柱巍然聳立。",
+        "KÖLSCH 同批次雙色光澤",
+        "get drunk get variocolor 俯身微笑",
+        "TURTLE CUM 海龜精液",
+        "锁闪”（Shiny Locked）是《宝可梦》（Pokémon）游戏中的一个专业术语，意思是游戏官方通过程序设定，让某些特定的宝可梦在遇到时绝对不可能变成异色（即闪光/不同颜色）形态，其出现闪光的概率被强制锁定为 0%。",
+        "5000 encounters, no shiny? 5000次遇敌，还没有闪光？",
+        "Must put in a ticket for CM. 必须给CM提交工单。",
+        "Where shiny at? 闪光在哪里？",
+        "Give me fortune god. 财神爷，赐我好运！",
+        "In 2007 Rock was seen coaching pigeons for a marathon. None finished. Rock blamed the weather. -Hollow",
+        "desk breakfast without plate 书桌吃早餐无盘",
+        "no paper towel wipe desk 没有纸巾擦桌案",
+        "dinner time comes around 晚餐时间又来到",
+        "desk crumbs still can eat 桌上碎屑还能吃",
+        "In 2026 RockLogster has officially denied ever owning a monkey suit. Unfortunately, there are 19 photographs. -Hollow",
+      
+      ]
+    };
+
+    document.getElementById("header-text").innerText = config.header_title;
+    document.getElementById("header-gif").src = config.header_icon;
+
+    function renderjokecard(message, index) {
+      const color = config.colors[index % config.colors.length];
+
+      const imgtags = config.seperator
+        .map(url => `<img src="${url}" alt="sep">`)
+        .join('');
+
+      return `
+        <div class="t-item" style="border-color: ${color}aa; color: ${color};">
+          <span>${message}</span>
+        </div>
+        <div class="t-spacer">
+          ${imgtags}
+        </div>
+      `;
+    }
+
+    function initticker() {
+      const container = document.getElementById('ticker-content');
+      const markup = config.shmemes.map((msg, idx) => renderjokecard(msg, idx)).join('');
+      
+      container.innerHTML = markup + markup;
+
+      const totalwidth = container.scrollWidth / 2;
+      const scrollspeed = Math.max(30, Math.round(totalwidth / 60));
+      container.style.animationDuration = `${scrollspeed}s`;
+    }
+
+    initticker();
+  </script>
+</body>
+</html>
